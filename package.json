@@ -1,0 +1,26 @@
+{
+  "name": "jsconstructor",
+  "version": "1.0.0",
+  "description": "javascript pure app",
+  "main": "index.js",
+  "scripts": {
+    "serve": "parcel ./src/index.html ~p 4200 --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bthrsn/JSConstructor.git"
+  },
+  "keywords": [
+    "js",
+    "javascript"
+  ],
+  "author": "Mikhail <mikhail.lhts@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bthrsn/JSConstructor/issues"
+  },
+  "homepage": "https://github.com/bthrsn/JSConstructor#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
