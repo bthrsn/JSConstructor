@@ -117,57 +117,147 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"model.js":[function(require,module,exports) {
+})({"assets/imageAchievment.png":[function(require,module,exports) {
+module.exports = "/imageAchievment.5ef7ea47.png";
+},{}],"model.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.model = void 0;
+
+var _imageAchievment = _interopRequireDefault(require("./assets/imageAchievment.png"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var text = 'ЗА ЭТИМ КОДОМ ОХОТЯТСЯ ЛУЧШИЕ ФРОНТЕНДЕРЫ МИРА! МУЖ ОТНОСИТ ДЕТЕЙ НА РУКАХ ПОДАЛЬШЕ ОТ КОМПЬЮТЕРА! СОСЕДИ И РОДСТВЕННИКИ ТРЕЩАТ ПО ШВАМ! ПОДРУГИ ПОУМИРАЛИ ОТ ЗАВИСТИ (НЕ С КЕМ ДРУЖИТЬ). УДАЛЮ ЧЕРЕЗ 234 ДНЯ! ВСТРЕЧАЙТЕ:';
 var model = [{
   type: 'title',
-  value: 'Hello, World fom JS!!!!'
-}, {
-  type: 'text',
-  value: 'here we go with some text'
-}, {
-  type: 'columns',
-  value: ['1111111', '2222222', '3333333']
+  value: 'Конструктор cайтов на чистом JavaScript',
+  options: {
+    tag: 'h2',
+    styles: {
+      background: 'linear-gradient(to right, #ff0099, #493240)',
+      color: '#fff',
+      padding: '1.5rem',
+      'text-align': 'center'
+    }
+  }
 }, {
   type: 'image',
-  value: './assets/image.png'
+  value: _imageAchievment.default,
+  options: {
+    styles: {
+      padding: '2rem 0',
+      display: 'flex',
+      'justify-content': 'center'
+    }
+  }
+}, {
+  type: 'columns',
+  value: ['Без использования библиотек', 'Принципы SOLID и ООП в JavaScript', 'UI своими руками'],
+  options: {
+    styles: {
+      background: 'linear-gradient(to bottom, #8e2de2, #4a00e0)',
+      padding: '2rem',
+      color: '#fff',
+      'font-weight': 'bold'
+    }
+  }
+}, {
+  type: 'text',
+  value: text,
+  options: {
+    styles: {
+      background: 'linear-gradient(to left, #f2994a, #f2c94c)',
+      padding: '1rem',
+      'font-weight': 'bold'
+    }
+  }
 }];
 exports.model = model;
+},{"./assets/imageAchievment.png":"assets/imageAchievment.png"}],"utils.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.row = row;
+exports.col = col;
+exports.css = css;
+
+function row(content) {
+  var styles = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  return "<div class=\"row\" style=\"".concat(styles, "\">").concat(content, "</div> ");
+}
+
+function col(content) {
+  return "<div class=\"col-sm\">".concat(content, "</div> ");
+}
+
+function css() {
+  var styles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  // // Способ обработки объекта styles и превращение его в строку для css
+  // const keys = Object.keys(styles);
+  // // Массив для css свойств, преобразованных из объекта в строку
+  // const array = keys.map(key => {
+  //     return `${key}: ${styles[key]}`
+  // });
+  // // И соединенных между собой точкой с запятой
+  // return array.join(';');
+  // // Cокращаем запись кода выше в одну строчку
+  // return Object.keys(styles).map(key => `${key}: ${styles[key]}`).join(';');
+  // Делаем код более читабельным
+  var toString = function toString(key) {
+    return "".concat(key, ": ").concat(styles[key]);
+  };
+
+  return Object.keys(styles).map(toString).join(';');
+}
 },{}],"templates.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.title = title;
-exports.text = text;
-exports.columns = columns;
-exports.image = image;
+exports.templates = void 0;
+
+var _utils = require("./utils");
 
 function title(block) {
-  return "\n    <div class=\"row\">\n        <div class=\"col-sm\">\n            <h1>".concat(block.value, "</h1>\n        </div>\n    </div>\n    ");
+  var _block$options = block.options,
+      _block$options$tag = _block$options.tag,
+      tag = _block$options$tag === void 0 ? 'h1' : _block$options$tag,
+      styles = _block$options.styles; // // Переменная для тэга заголовка, ?? - используется, если тэг не указан
+  // const tag = block.options.tag ?? 'h1';
+  // const styles = block.options.styles; 
+
+  return (0, _utils.row)((0, _utils.col)("<".concat(tag, ">").concat(block.value, "</").concat(tag, ">")), (0, _utils.css)(styles));
 }
 
 function text(block) {
-  return "\n    <div class=\"row\">\n        <div class=\"col-sm\">\n            <p>".concat(block.value, "</p>\n        </div>\n    </div>\n    ");
+  return (0, _utils.row)((0, _utils.col)("<p>".concat(block.value, "</p>")), (0, _utils.css)(block.options.styles));
 }
 
 function columns(block) {
-  var column = block.value.map(function (item) {
-    return "<div class=\"col-sm\">".concat(item, "</div>");
-  });
-  return "\n   <div class=\"row\">\n       ".concat(column.join(''), "\n   </div>\n   ");
+  var column = block.value.map(_utils.col).join('');
+  return (0, _utils.row)(column, (0, _utils.css)(block.options.styles));
 }
 
 function image(block) {
-  return "\n       <div class=\"row\">\n           <img src = \"".concat(block.value, "\">\n       </div> \n   ");
+  return (0, _utils.row)("<img src = \"".concat(block.value, "\">"), (0, _utils.css)(block.options.styles));
 }
-},{}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+
+var templates = {
+  title: title,
+  text: text,
+  image: image,
+  columns: columns
+};
+exports.templates = templates;
+},{"./utils":"utils.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -248,21 +338,19 @@ var _templates = require("./templates");
 
 require("./styles/main.css");
 
-var site = document.querySelector('#site');
-var html = '';
+var site = document.querySelector('#site'); // // Для примера - в переменной лежит один из типов значений block
+// const key = 'title';
+// // передаем его в объект templates со всеми функциями
+// console.log(templates[key]);
 
 _model.model.forEach(function (block) {
-  if (block.type === 'title') {
-    html = (0, _templates.title)(block);
-  } else if (block.type === 'text') {
-    html = (0, _templates.text)(block);
-  } else if (block.type === 'columns') {
-    html = (0, _templates.columns)(block);
-  } else if (block.type === 'image') {
-    html = (0, _templates.image)(block);
-  }
+  //   Функция принимает параметр block.type и возвращает HTML нужного блока
+  var toHTML = _templates.templates[block.type]; // Проверяем, есть ли ключ в функции toHTML
 
-  site.insertAdjacentHTML('beforeend', html);
+  if (toHTML) {
+    // и только тогда используем функцию для каждого blocl в model
+    site.insertAdjacentHTML('beforeend', toHTML(block));
+  }
 });
 },{"./model":"model.js","./templates":"templates.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -292,7 +380,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55361" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59111" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

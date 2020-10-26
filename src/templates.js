@@ -1,36 +1,29 @@
-export function title(block) {
-    return `
-    <div class="row">
-        <div class="col-sm">
-            <h1>${block.value}</h1>
-        </div>
-    </div>
-    `
+import {row, col, css} from './utils';
+
+function title(block) {
+    const {tag = 'h1', styles} = block.options;
+    // // Переменная для тэга заголовка, ?? - используется, если тэг не указан
+    // const tag = block.options.tag ?? 'h1';
+    // const styles = block.options.styles; 
+    return row(col(`<${tag}>${block.value}</${tag}>`), css(styles));
 }
 
-export function text(block) {
-    return `
-    <div class="row">
-        <div class="col-sm">
-            <p>${block.value}</p>
-        </div>
-    </div>
-    `
+function text(block) {
+    return row(col(`<p>${block.value}</p>`), css(block.options.styles));
 }
 
-export function columns(block) {
-   let column = block.value.map(item => `<div class="col-sm">${item}</div>`);
-   return `
-   <div class="row">
-       ${column.join('')}
-   </div>
-   `
+function columns(block) {
+   let column = block.value.map(col).join('');
+   return row(column, css(block.options.styles));
 }
 
-export function image(block) {
-   return `
-       <div class="row">
-           <img src = "${block.value}">
-       </div> 
-   `
+function image(block) {
+   return row(`<img src = "${block.value}">`, css(block.options.styles));
+}
+
+export const templates = {
+    title,
+    text,
+    image,
+    columns
 }
