@@ -141,7 +141,6 @@ function col(content) {
 
 function css() {
   var styles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
   // // Способ обработки объекта styles и превращение его в строку для css
   // const keys = Object.keys(styles)
   // // Массив для css свойств, преобразованных из объекта в строку
@@ -152,7 +151,9 @@ function css() {
   // return array.join(';')
   // // Cокращаем запись кода выше в одну строчку
   // return Object.keys(styles).map(key => `${key}: ${styles[key]}`).join(';')
-  // Делаем код более читабельным
+  // Условие для css, которые уже является строкой - просто возвращаем эту строку 
+  if (typeof styles === 'string') return styles; // Делаем код более читабельным
+
   var toString = function toString(key) {
     return "".concat(key, ": ").concat(styles[key]);
   };
@@ -332,7 +333,7 @@ var _blocks = require("./classes/blocks");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var text = 'ЗА ЭТИМ КОДОМ ОХОТЯТСЯ ЛУЧШИЕ ФРОНТЕНДЕРЫ МИРА! МУЖ ОТНОСИТ ДЕТЕЙ НА РУКАХ ПОДАЛЬШЕ ОТ КОМПЬЮТЕРА! СОСЕДИ И РОДСТВЕННИКИ ТРЕЩАТ ПО ШВАМ! ПОДРУГИ ПОУМИРАЛИ ОТ ЗАВИСТИ (НЕ С КЕМ ДРУЖИТЬ). УДАЛЮ ЧЕРЕЗ 234 ДНЯ! ВСТРЕЧАЙТЕ:';
+var text = 'ЗА ЭТИМ КОДОМ ОХОТЯТСЯ ЛУЧШИЕ ФРОНТЕНДЕРЫ МИРА! МУЖ ОТНОСИТ ДЕТЕЙ НА РУКАХ ПОДАЛЬШЕ ОТ КОМПЬЮТЕРА! СОСЕДИ И РОДСТВЕННИКИ ТРЕЩАТ ПО ШВАМ! ПОДРУГИ ПОУМИРАЛИ ОТ ЗАВИСТИ (НЕ С КЕМ ДРУЖИТЬ). УДАЛЮ ЧЕРЕЗ 234 ДНЯ! ВСТРЕЧАЙТЕ!';
 var model = [new _blocks.TitleBlock('Конструктор cайтов на чистом JavaScript', {
   tag: 'h2',
   styles: {
@@ -394,6 +395,9 @@ var Site = /*#__PURE__*/function () {
     value: function render(model) {
       var _this = this;
 
+      // Чтобы не дублировался весь HTML придобавлении нового элемента
+      this.$element.innerHTML = ''; // Добавление нового элемента
+
       model.forEach(function (block) {
         _this.$element.insertAdjacentHTML('beforeend', block.toHTML());
       });
@@ -427,7 +431,7 @@ var Sidebar = /*#__PURE__*/function () {
     _classCallCheck(this, Sidebar);
 
     this.$element = document.querySelector(selector);
-    this.updatу = updateCallback;
+    this.update = updateCallback;
     this.init();
   }
 
@@ -445,14 +449,17 @@ var Sidebar = /*#__PURE__*/function () {
       event.preventDefault();
       var type = event.target.name,
           value = event.target.value.value,
-          styles = event.target.styles.value; // Переписать этот кусок кода, так как он упрощени сдеан только под 2 типа блоков: текст и заголовок
+          styles = event.target.styles.value; // Переписать этот кусок кода, так как он упрощени сдеан только под 2 типа блоков: текст и заголовок. Добавить функцию?
 
       var newBlock = type === 'text' ? new _blocks.TextBlock(value, {
         styles: styles
       }) : new _blocks.TitleBlock(value, {
         styles: styles
       });
-      this.update(newBlock);
+      this.update(newBlock); // Очистка формы
+
+      event.target.value.value = '';
+      event.target.styles.value = '';
     }
   }, {
     key: "template",
@@ -465,7 +472,57 @@ var Sidebar = /*#__PURE__*/function () {
 }();
 
 exports.Sidebar = Sidebar;
-},{"../utils":"utils.js","./blocks":"classes/blocks.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"../utils":"utils.js","./blocks":"classes/blocks.js"}],"classes/app.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.App = void 0;
+
+var _site = require("./site");
+
+var _sidebar = require("./sidebar");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var App = /*#__PURE__*/function () {
+  function App(model) {
+    _classCallCheck(this, App);
+
+    this.model = model; // Запуск сайта
+
+    this.init();
+  }
+
+  _createClass(App, [{
+    key: "init",
+    value: function init() {
+      var _this = this;
+
+      var site = new _site.Site('#site'); // Создаем сайт по файлу model.js 
+
+      site.render(this.model); // Колбэк функция для добавления блоков на сайт из сайдбара
+
+      var updateCallback = function updateCallback(newBlock) {
+        _this.model.push(newBlock);
+
+        site.render(_this.model);
+      };
+
+      new _sidebar.Sidebar('#panel', updateCallback);
+    }
+  }]);
+
+  return App;
+}();
+
+exports.App = App;
+},{"./site":"classes/site.js","./sidebar":"classes/sidebar.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -542,23 +599,13 @@ module.hot.accept(reloadCSS);
 
 var _model = require("./model");
 
-var _site = require("./classes/site");
-
-var _sidebar = require("./classes/sidebar");
+var _app = require("./classes/app");
 
 require("./styles/main.css");
 
-var site = new _site.Site('#site');
-site.render(_model.model); // Колбэк функция для добавления блоков на сайт из сайдбара
-
-var updateCallback = function updateCallback(newBlock) {
-  _model.model.push(newBlock);
-
-  site.render(_model.model);
-};
-
-new _sidebar.Sidebar('#panel', updateCallback);
-},{"./model":"model.js","./classes/site":"classes/site.js","./classes/sidebar":"classes/sidebar.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+// Чтобы точка входа была максимально абстрактной - подробный функционал перенесен в файл app.js в классах
+new _app.App(_model.model);
+},{"./model":"model.js","./classes/app":"classes/app.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -586,7 +633,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59111" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55080" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

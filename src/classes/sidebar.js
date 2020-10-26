@@ -4,7 +4,7 @@ import {TextBlock, TitleBlock} from './blocks'
 export class Sidebar {
     constructor(selector, updateCallback) {
         this.$element = document.querySelector(selector)
-        this.updatу = updateCallback
+        this.update = updateCallback
         
         this.init()
     }
@@ -30,11 +30,15 @@ export class Sidebar {
               value = event.target.value.value,
               styles = event.target.styles.value
               
-        // Переписать этот кусок кода, так как он упрощени сдеан только под 2 типа блоков: текст и заголовок
+        // Переписать этот кусок кода, так как он упрощени сдеан только под 2 типа блоков: текст и заголовок. Добавить функцию?
         const newBlock = type === 'text' 
             ? new TextBlock(value, {styles})
             : new TitleBlock(value, {styles})  
             
         this.update(newBlock)
+        
+        // Очистка формы
+        event.target.value.value = ''
+        event.target.styles.value = ''
     }  
 }

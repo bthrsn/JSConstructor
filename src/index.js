@@ -1,16 +1,6 @@
 import {model} from './model'
-import {Site} from './classes/site'
-import {Sidebar} from './classes/sidebar'
+import {App} from './classes/app'
 import './styles/main.css'
 
-const site = new Site('#site')
-
-site.render(model)
-
-// Колбэк функция для добавления блоков на сайт из сайдбара
-const updateCallback = newBlock => {
-    model.push(newBlock)
-    site.render(model)
-}
-
-new Sidebar('#panel', updateCallback);
+// Чтобы точка входа была максимально абстрактной - подробный функционал перенесен в файл app.js в классах
+new App(model)

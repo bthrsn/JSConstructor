@@ -19,6 +19,8 @@ export function css(styles = {}) {
     // // Cокращаем запись кода выше в одну строчку
     // return Object.keys(styles).map(key => `${key}: ${styles[key]}`).join(';')
     
+    // Условие для css, которые уже является строкой - просто возвращаем эту строку 
+    if (typeof styles === 'string') return styles
     // Делаем код более читабельным
     const toString = key => `${key}: ${styles[key]}`
     return Object.keys(styles).map(toString).join(';')
