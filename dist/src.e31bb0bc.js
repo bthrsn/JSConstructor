@@ -128,6 +128,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.row = row;
 exports.col = col;
 exports.css = css;
+exports.block = block;
 
 function row(content) {
   var styles = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
@@ -142,21 +143,25 @@ function css() {
   var styles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   // // Способ обработки объекта styles и превращение его в строку для css
-  // const keys = Object.keys(styles);
+  // const keys = Object.keys(styles)
   // // Массив для css свойств, преобразованных из объекта в строку
   // const array = keys.map(key => {
   //     return `${key}: ${styles[key]}`
   // });
   // // И соединенных между собой точкой с запятой
-  // return array.join(';');
+  // return array.join(';')
   // // Cокращаем запись кода выше в одну строчку
-  // return Object.keys(styles).map(key => `${key}: ${styles[key]}`).join(';');
+  // return Object.keys(styles).map(key => `${key}: ${styles[key]}`).join(';')
   // Делаем код более читабельным
   var toString = function toString(key) {
     return "".concat(key, ": ").concat(styles[key]);
   };
 
   return Object.keys(styles).map(toString).join(';');
+}
+
+function block(type) {
+  return "\n        <form name=\"".concat(type, "\">\n            <h5>").concat(type, "</h5>\n            <div class=\"form-group\">\n                <input class=\"form-comtrol form-control-sm\" name=\"value\" placeholder=\"value\">\n            </div>\n            <div class=\"form-group\">\n                <input class=\"form-comtrol form-control-sm\" name=\"styles\" placeholder=\"styles\">\n            </div>\n            <button type=\"submit\" class=\"btn btn-primary btn-sm\">\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C</button>\n       </form>\n       <hr />\n    ");
 }
 },{}],"classes/blocks.js":[function(require,module,exports) {
 "use strict";
@@ -191,10 +196,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var Block = /*#__PURE__*/function () {
-  function Block(type, value, options) {
+  function Block(value, options) {
     _classCallCheck(this, Block);
 
-    this.type = type;
     this.value = value;
     this.options = options;
   }
@@ -207,7 +211,8 @@ var Block = /*#__PURE__*/function () {
   }]);
 
   return Block;
-}();
+}(); // Теперь, если нужно добавить новый блок, нам не нужно писать новую функцию. Нужно просто добавить новый класс, наследующий от блока value и options
+
 
 var TitleBlock = /*#__PURE__*/function (_Block) {
   _inherits(TitleBlock, _Block);
@@ -217,7 +222,7 @@ var TitleBlock = /*#__PURE__*/function (_Block) {
   function TitleBlock(value, options) {
     _classCallCheck(this, TitleBlock);
 
-    return _super.call(this, 'title', value, options);
+    return _super.call(this, value, options);
   }
 
   _createClass(TitleBlock, [{
@@ -227,8 +232,8 @@ var TitleBlock = /*#__PURE__*/function (_Block) {
           _this$options$tag = _this$options.tag,
           tag = _this$options$tag === void 0 ? 'h1' : _this$options$tag,
           styles = _this$options.styles; // // Переменная для тэга заголовка, ?? - используется, если тэг не указан
-      // const tag = block.options.tag ?? 'h1';
-      // const styles = block.options.styles; 
+      // const tag = block.options.tag ?? 'h1'
+      // const styles = block.options.styles 
 
       return (0, _utils.row)((0, _utils.col)("<".concat(tag, ">").concat(this.value, "</").concat(tag, ">")), (0, _utils.css)(styles));
     }
@@ -247,7 +252,7 @@ var ImageBlock = /*#__PURE__*/function (_Block2) {
   function ImageBlock(value, options) {
     _classCallCheck(this, ImageBlock);
 
-    return _super2.call(this, 'image', value, options);
+    return _super2.call(this, value, options);
   }
 
   _createClass(ImageBlock, [{
@@ -275,7 +280,7 @@ var ColumnsBlock = /*#__PURE__*/function (_Block3) {
   function ColumnsBlock(value, options) {
     _classCallCheck(this, ColumnsBlock);
 
-    return _super3.call(this, 'columns', value, options);
+    return _super3.call(this, value, options);
   }
 
   _createClass(ColumnsBlock, [{
@@ -299,7 +304,7 @@ var TextBlock = /*#__PURE__*/function (_Block4) {
   function TextBlock(value, options) {
     _classCallCheck(this, TextBlock);
 
-    return _super4.call(this, 'text', value, options);
+    return _super4.call(this, value, options);
   }
 
   _createClass(TextBlock, [{
@@ -362,7 +367,105 @@ var model = [new _blocks.TitleBlock('Конструктор cайтов на ч�
   }
 })];
 exports.model = model;
-},{"./assets/imageAchievment.png":"assets/imageAchievment.png","./classes/blocks":"classes/blocks.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"./assets/imageAchievment.png":"assets/imageAchievment.png","./classes/blocks":"classes/blocks.js"}],"classes/site.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Site = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Site = /*#__PURE__*/function () {
+  function Site(selector) {
+    _classCallCheck(this, Site);
+
+    // $ - этим знаком обозначаются элементы DOM-дерева
+    this.$element = document.querySelector(selector);
+  }
+
+  _createClass(Site, [{
+    key: "render",
+    value: function render(model) {
+      var _this = this;
+
+      model.forEach(function (block) {
+        _this.$element.insertAdjacentHTML('beforeend', block.toHTML());
+      });
+    }
+  }]);
+
+  return Site;
+}();
+
+exports.Site = Site;
+},{}],"classes/sidebar.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Sidebar = void 0;
+
+var _utils = require("../utils");
+
+var _blocks = require("./blocks");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Sidebar = /*#__PURE__*/function () {
+  function Sidebar(selector, updateCallback) {
+    _classCallCheck(this, Sidebar);
+
+    this.$element = document.querySelector(selector);
+    this.updatу = updateCallback;
+    this.init();
+  }
+
+  _createClass(Sidebar, [{
+    key: "init",
+    value: function init() {
+      this.$element.insertAdjacentHTML('afterbegin', this.template); // Чтобы не терять контекст вызова this - привязываем его методом bind
+
+      this.$element.addEventListener('submit', this.add.bind(this));
+    }
+  }, {
+    key: "add",
+    // Функция для получения данных со страницы и отмены перезагрузки страницы
+    value: function add(event) {
+      event.preventDefault();
+      var type = event.target.name,
+          value = event.target.value.value,
+          styles = event.target.styles.value; // Переписать этот кусок кода, так как он упрощени сдеан только под 2 типа блоков: текст и заголовок
+
+      var newBlock = type === 'text' ? new _blocks.TextBlock(value, {
+        styles: styles
+      }) : new _blocks.TitleBlock(value, {
+        styles: styles
+      });
+      this.update(newBlock);
+    }
+  }, {
+    key: "template",
+    get: function get() {
+      return [(0, _utils.block)('text'), (0, _utils.block)('title')].join('');
+    }
+  }]);
+
+  return Sidebar;
+}();
+
+exports.Sidebar = Sidebar;
+},{"../utils":"utils.js","./blocks":"classes/blocks.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -439,14 +542,23 @@ module.hot.accept(reloadCSS);
 
 var _model = require("./model");
 
+var _site = require("./classes/site");
+
+var _sidebar = require("./classes/sidebar");
+
 require("./styles/main.css");
 
-var site = document.querySelector('#site');
+var site = new _site.Site('#site');
+site.render(_model.model); // Колбэк функция для добавления блоков на сайт из сайдбара
 
-_model.model.forEach(function (block) {
-  site.insertAdjacentHTML('beforeend', block.toHTML());
-});
-},{"./model":"model.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var updateCallback = function updateCallback(newBlock) {
+  _model.model.push(newBlock);
+
+  site.render(_model.model);
+};
+
+new _sidebar.Sidebar('#panel', updateCallback);
+},{"./model":"model.js","./classes/site":"classes/site.js","./classes/sidebar":"classes/sidebar.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
