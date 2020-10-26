@@ -119,65 +119,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"assets/imageAchievment.png":[function(require,module,exports) {
 module.exports = "/imageAchievment.5ef7ea47.png";
-},{}],"model.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.model = void 0;
-
-var _imageAchievment = _interopRequireDefault(require("./assets/imageAchievment.png"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var text = 'ЗА ЭТИМ КОДОМ ОХОТЯТСЯ ЛУЧШИЕ ФРОНТЕНДЕРЫ МИРА! МУЖ ОТНОСИТ ДЕТЕЙ НА РУКАХ ПОДАЛЬШЕ ОТ КОМПЬЮТЕРА! СОСЕДИ И РОДСТВЕННИКИ ТРЕЩАТ ПО ШВАМ! ПОДРУГИ ПОУМИРАЛИ ОТ ЗАВИСТИ (НЕ С КЕМ ДРУЖИТЬ). УДАЛЮ ЧЕРЕЗ 234 ДНЯ! ВСТРЕЧАЙТЕ:';
-var model = [{
-  type: 'title',
-  value: 'Конструктор cайтов на чистом JavaScript',
-  options: {
-    tag: 'h2',
-    styles: {
-      background: 'linear-gradient(to right, #ff0099, #493240)',
-      color: '#fff',
-      padding: '1.5rem',
-      'text-align': 'center'
-    }
-  }
-}, {
-  type: 'image',
-  value: _imageAchievment.default,
-  options: {
-    styles: {
-      padding: '2rem 0',
-      display: 'flex',
-      'justify-content': 'center'
-    }
-  }
-}, {
-  type: 'columns',
-  value: ['Без использования библиотек', 'Принципы SOLID и ООП в JavaScript', 'UI своими руками'],
-  options: {
-    styles: {
-      background: 'linear-gradient(to bottom, #8e2de2, #4a00e0)',
-      padding: '2rem',
-      color: '#fff',
-      'font-weight': 'bold'
-    }
-  }
-}, {
-  type: 'text',
-  value: text,
-  options: {
-    styles: {
-      background: 'linear-gradient(to left, #f2994a, #f2c94c)',
-      padding: '1rem',
-      'font-weight': 'bold'
-    }
-  }
-}];
-exports.model = model;
-},{"./assets/imageAchievment.png":"assets/imageAchievment.png"}],"utils.js":[function(require,module,exports) {
+},{}],"utils.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -216,48 +158,211 @@ function css() {
 
   return Object.keys(styles).map(toString).join(';');
 }
-},{}],"templates.js":[function(require,module,exports) {
+},{}],"classes/blocks.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.templates = void 0;
+exports.TextBlock = exports.ColumnsBlock = exports.ImageBlock = exports.TitleBlock = void 0;
 
-var _utils = require("./utils");
+var _utils = require("../utils");
 
-function title(block) {
-  var _block$options = block.options,
-      _block$options$tag = _block$options.tag,
-      tag = _block$options$tag === void 0 ? 'h1' : _block$options$tag,
-      styles = _block$options.styles; // // Переменная для тэга заголовка, ?? - используется, если тэг не указан
-  // const tag = block.options.tag ?? 'h1';
-  // const styles = block.options.styles; 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-  return (0, _utils.row)((0, _utils.col)("<".concat(tag, ">").concat(block.value, "</").concat(tag, ">")), (0, _utils.css)(styles));
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function text(block) {
-  return (0, _utils.row)((0, _utils.col)("<p>".concat(block.value, "</p>")), (0, _utils.css)(block.options.styles));
-}
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function columns(block) {
-  var column = block.value.map(_utils.col).join('');
-  return (0, _utils.row)(column, (0, _utils.css)(block.options.styles));
-}
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function image(block) {
-  return (0, _utils.row)("<img src = \"".concat(block.value, "\">"), (0, _utils.css)(block.options.styles));
-}
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-var templates = {
-  title: title,
-  text: text,
-  image: image,
-  columns: columns
-};
-exports.templates = templates;
-},{"./utils":"utils.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Block = /*#__PURE__*/function () {
+  function Block(type, value, options) {
+    _classCallCheck(this, Block);
+
+    this.type = type;
+    this.value = value;
+    this.options = options;
+  }
+
+  _createClass(Block, [{
+    key: "toHTML",
+    value: function toHTML() {
+      throw new Error('Метод toHTML должен быть реализован');
+    }
+  }]);
+
+  return Block;
+}();
+
+var TitleBlock = /*#__PURE__*/function (_Block) {
+  _inherits(TitleBlock, _Block);
+
+  var _super = _createSuper(TitleBlock);
+
+  function TitleBlock(value, options) {
+    _classCallCheck(this, TitleBlock);
+
+    return _super.call(this, 'title', value, options);
+  }
+
+  _createClass(TitleBlock, [{
+    key: "toHTML",
+    value: function toHTML() {
+      var _this$options = this.options,
+          _this$options$tag = _this$options.tag,
+          tag = _this$options$tag === void 0 ? 'h1' : _this$options$tag,
+          styles = _this$options.styles; // // Переменная для тэга заголовка, ?? - используется, если тэг не указан
+      // const tag = block.options.tag ?? 'h1';
+      // const styles = block.options.styles; 
+
+      return (0, _utils.row)((0, _utils.col)("<".concat(tag, ">").concat(this.value, "</").concat(tag, ">")), (0, _utils.css)(styles));
+    }
+  }]);
+
+  return TitleBlock;
+}(Block);
+
+exports.TitleBlock = TitleBlock;
+
+var ImageBlock = /*#__PURE__*/function (_Block2) {
+  _inherits(ImageBlock, _Block2);
+
+  var _super2 = _createSuper(ImageBlock);
+
+  function ImageBlock(value, options) {
+    _classCallCheck(this, ImageBlock);
+
+    return _super2.call(this, 'image', value, options);
+  }
+
+  _createClass(ImageBlock, [{
+    key: "toHTML",
+    value: function toHTML() {
+      var _this$options2 = this.options,
+          is = _this$options2.imageStyles,
+          _this$options2$alt = _this$options2.alt,
+          alt = _this$options2$alt === void 0 ? '' : _this$options2$alt,
+          styles = _this$options2.styles;
+      return (0, _utils.row)("<img src = \"".concat(this.value, "\" alt = \"").concat(alt, "\" style = \"").concat((0, _utils.css)(is), "\">"), (0, _utils.css)(this.options.styles));
+    }
+  }]);
+
+  return ImageBlock;
+}(Block);
+
+exports.ImageBlock = ImageBlock;
+
+var ColumnsBlock = /*#__PURE__*/function (_Block3) {
+  _inherits(ColumnsBlock, _Block3);
+
+  var _super3 = _createSuper(ColumnsBlock);
+
+  function ColumnsBlock(value, options) {
+    _classCallCheck(this, ColumnsBlock);
+
+    return _super3.call(this, 'columns', value, options);
+  }
+
+  _createClass(ColumnsBlock, [{
+    key: "toHTML",
+    value: function toHTML() {
+      var column = this.value.map(_utils.col).join('');
+      return (0, _utils.row)(column, (0, _utils.css)(this.options.styles));
+    }
+  }]);
+
+  return ColumnsBlock;
+}(Block);
+
+exports.ColumnsBlock = ColumnsBlock;
+
+var TextBlock = /*#__PURE__*/function (_Block4) {
+  _inherits(TextBlock, _Block4);
+
+  var _super4 = _createSuper(TextBlock);
+
+  function TextBlock(value, options) {
+    _classCallCheck(this, TextBlock);
+
+    return _super4.call(this, 'text', value, options);
+  }
+
+  _createClass(TextBlock, [{
+    key: "toHTML",
+    value: function toHTML() {
+      return (0, _utils.row)((0, _utils.col)("<p>".concat(this.value, "</p>")), (0, _utils.css)(this.options.styles));
+    }
+  }]);
+
+  return TextBlock;
+}(Block);
+
+exports.TextBlock = TextBlock;
+},{"../utils":"utils.js"}],"model.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.model = void 0;
+
+var _imageAchievment = _interopRequireDefault(require("./assets/imageAchievment.png"));
+
+var _blocks = require("./classes/blocks");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var text = 'ЗА ЭТИМ КОДОМ ОХОТЯТСЯ ЛУЧШИЕ ФРОНТЕНДЕРЫ МИРА! МУЖ ОТНОСИТ ДЕТЕЙ НА РУКАХ ПОДАЛЬШЕ ОТ КОМПЬЮТЕРА! СОСЕДИ И РОДСТВЕННИКИ ТРЕЩАТ ПО ШВАМ! ПОДРУГИ ПОУМИРАЛИ ОТ ЗАВИСТИ (НЕ С КЕМ ДРУЖИТЬ). УДАЛЮ ЧЕРЕЗ 234 ДНЯ! ВСТРЕЧАЙТЕ:';
+var model = [new _blocks.TitleBlock('Конструктор cайтов на чистом JavaScript', {
+  tag: 'h2',
+  styles: {
+    background: 'linear-gradient(to right, #ff0099, #493240)',
+    color: '#fff',
+    padding: '1.5rem',
+    'text-align': 'center'
+  }
+}), new _blocks.ImageBlock(_imageAchievment.default, {
+  styles: {
+    padding: '2rem 0',
+    display: 'flex',
+    'justify-content': 'center'
+  },
+  imageStyles: {
+    width: '500px',
+    height: 'auto'
+  },
+  alt: 'Звук получения достижения на консоли'
+}), new _blocks.ColumnsBlock(['Без использования библиотек', 'Принципы SOLID и ООП в JavaScript', 'UI своими руками'], {
+  styles: {
+    background: 'linear-gradient(to bottom, #8e2de2, #4a00e0)',
+    padding: '2rem',
+    color: '#fff',
+    'font-weight': 'bold'
+  }
+}), new _blocks.TextBlock(text, {
+  styles: {
+    background: 'linear-gradient(to left, #f2994a, #f2c94c)',
+    padding: '1rem',
+    'font-weight': 'bold'
+  }
+})];
+exports.model = model;
+},{"./assets/imageAchievment.png":"assets/imageAchievment.png","./classes/blocks":"classes/blocks.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -334,25 +439,14 @@ module.hot.accept(reloadCSS);
 
 var _model = require("./model");
 
-var _templates = require("./templates");
-
 require("./styles/main.css");
 
-var site = document.querySelector('#site'); // // Для примера - в переменной лежит один из типов значений block
-// const key = 'title';
-// // передаем его в объект templates со всеми функциями
-// console.log(templates[key]);
+var site = document.querySelector('#site');
 
 _model.model.forEach(function (block) {
-  //   Функция принимает параметр block.type и возвращает HTML нужного блока
-  var toHTML = _templates.templates[block.type]; // Проверяем, есть ли ключ в функции toHTML
-
-  if (toHTML) {
-    // и только тогда используем функцию для каждого blocl в model
-    site.insertAdjacentHTML('beforeend', toHTML(block));
-  }
+  site.insertAdjacentHTML('beforeend', block.toHTML());
 });
-},{"./model":"model.js","./templates":"templates.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./model":"model.js","./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
